@@ -70,10 +70,10 @@ def main():
     wm.add_watch('./b', pyinotify.ALL_EVENTS, rec=True)
     wm.add_watch('.', pyinotify.ALL_EVENTS, rec=True)
     # mv b d 没反应
-    # touch b 有 create 信号
+    # touch b 有 create 信号, 在 create 信号中需要重新 add_watch
     # 如果删掉 b 之后 touch b, 需要重新 add_watch
-    # 启动之后老日志不要了, 只监控新增的日志, 打开之后 seek(0, 2)
-    # 如果打开失败则认为不监控这个文件
+    # 启动之后老日志不要了, 只监控新增的日志, 打开之后 seek(0, 2), 定位到末尾
+    # 如果打开失败则说明此文件不存在, 监控这个文件
     #
     #
     #/tmp是可以自己修改的监控的目录
