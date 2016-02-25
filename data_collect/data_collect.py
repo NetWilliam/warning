@@ -2,11 +2,7 @@
 #! coding: utf-8
 
 import pyinotify
-import redis
-import zmq
-
-
-def push_message(message):
+from public import message # noqa
 
 
 class FileEventHandler(pyinotify.ProcessEvent):
@@ -21,4 +17,4 @@ class FileEventHandler(pyinotify.ProcessEvent):
 
 
 class FileWatcher(object):
-
+    pass
