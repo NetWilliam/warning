@@ -5,5 +5,5 @@ from message import MessageSubscriber as MS
 
 
 if __name__ == "__main__":
-    ms = MS("redis")
+    ms = MS("zmq")
     ms.start_subscribe()

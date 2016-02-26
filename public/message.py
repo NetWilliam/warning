@@ -79,7 +79,9 @@ class MessageSubscriber(object):
         for topic in topics:
             self.set_topic(topic)
 
-    def start_subscribe(self):
+    def start_subscribe(self, topics=None):
+        if topics:
+            self.set_topics(topics)
         if self.type == ZMQ_TYPE:
             while True:
                 topic, msg = self._socket.recv_multipart()
