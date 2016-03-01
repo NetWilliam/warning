@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 #! coding: utf-8
 
+import time
 from collections import deque
 import gevent
 import commands
-from multiprocessing import Pool
+from parser import parser
+#from multiprocessing import Pool
 
 g_queue = deque([])
 seq = 0
-judge = "((${value} < 20))"
+#judge = "((${value} < 20))"
+judge = "value<20"
 #pool = Pool()
 
 
@@ -16,9 +19,9 @@ def get_values():
     import time
     print "get_values()", time.time()
     global seq
-    for i in range(600):
+    for i in range(10000):
         g_queue.append(seq + i)
-    seq += 600
+    seq += 10000
     gevent.sleep(1)
 
 
@@ -41,12 +44,19 @@ def calc_values():
     i = g_queue.popleft()
     try:
         while i is not None:
-            cmd = "bash -c 'export value=%s;%s'" % (i, judge)
+            cmd = "value=%s" % i
+            res = parser.parse(cmd)
+            cmd = judge
+            res = parser.parse(cmd)
+            #cmd = "value=%s\n%s" % (i, judge)
+            #res = parser.parse(cmd)
+            #cmd = "bash -c 'export value=%s;%s'" % (i, judge)
             #print cmd
-            status, output = commands.getstatusoutput(cmd)
-            #print "i=%d, status=%s" % (i, status)
+            #status, output = commands.getstatusoutput(cmd)
+            #print "i=%d, status=%s" % (i, res)
             i = g_queue.popleft()
     except IndexError:
+        print time.time()
         gevent.sleep(0)
 
 if __name__ == "__main__":

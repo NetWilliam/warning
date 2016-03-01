@@ -70,7 +70,7 @@ def p_statement_assign(t):
 
 def p_statement_expr(t):
     'statement : expression'
-    print(t[1])
+    #print(t[1])
     global result
     result = t[1]
 
