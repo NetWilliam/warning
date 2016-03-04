@@ -51,7 +51,7 @@ def on_point_one_second_timer(monitors, monitor_queue):
     timer.start()
 
 
-def start_monitor(monitor_queue):
+def set_monitor(monitor_queue):
     monitors = configure.get_monitors()
     monitor_cnt = len(monitors)
 
@@ -88,8 +88,13 @@ class WarningFilter():
             self._next_message = self._queue.get()
             self.filter_and_warning()
 
+    def send_alert(self):
+        pass
+
     def filter_and_warning(self):
-        pass # do warning checking and alerting work
+        some_condition = self.some_work(self._next_message)
+        if some_condition:
+            self.send_alert()
 
 
 def on_monitor_message_received(monitor_queue, warning_filter_queues):
@@ -105,7 +110,7 @@ def dispatch_warning(monitor_messages, warning_filter_queues):
             message_queue.put[monitor_message]
 
 
-def start_warning_filer(monitor_queue):
+def set_warning_filter(monitor_queue):
     warnings = configure.get_warnings()
     warning_cnt = len(warnings)
     print warning_cnt
@@ -123,6 +128,6 @@ def start_warning_filer(monitor_queue):
 
 if __name__ == "__main__":
     monitor_queue = queue.Queue()
-    monitor_jobs = start_monitor(monitor_queue)
-    warning_jobs = start_warning_filer(monitor_queue)
+    monitor_jobs = set_monitor(monitor_queue)
+    warning_jobs = set_warning_filter(monitor_queue)
     gevent.joinall(monitor_jobs + warning_jobs)
